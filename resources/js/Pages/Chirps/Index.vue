@@ -8,19 +8,22 @@ import InputError from '@/Components/InputError.vue';
 defineProps(['title','subtitle'])
 
 const message = ref(''),
-        errors = ref({})
+    errors = ref({}),
+    processing = ref(false)
 
 function submit(){
+    processing.value = true;
     axios.post(route('chirps.store'),{message : message.value})
     .then((res) =>{
         console.log(res.data)
         message.value = ''
+        errors.value = {}
     })
     .catch((error)=>{
         if(error.response.status == 422){
             errors.value = error.response.data.errors
         }
-    })
+    }).finally( () => (processing.value = false) )
 }
 </script>
 
@@ -41,7 +44,7 @@ function submit(){
                         <InputError :message="errors.message && errors.message[0]" ></InputError>
                         
                         
-                        <PrimaryButton class="mt-2">Chirp</PrimaryButton>
+                        <PrimaryButton  :disabled="processing" class="mt-2">{{  processing ? 'Enviando..' : 'Chirps' }}</PrimaryButton>
                        </form>
                     </div>
                 </div>
