@@ -7,22 +7,20 @@ import axios from 'axios';
 import InputError from '@/Components/InputError.vue';
 defineProps(['title','subtitle'])
 
-const message = ref('valor por defecto'),
+const message = ref(''),
         errors = ref({})
 
 function submit(){
     axios.post(route('chirps.store'),{message : message.value})
     .then((res) =>{
         console.log(res.data)
+        message.value = ''
     })
     .catch((error)=>{
         if(error.response.status == 422){
             errors.value = error.response.data.errors
         }
-        
-        
     })
-    
 }
 </script>
 
