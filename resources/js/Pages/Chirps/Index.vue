@@ -1,29 +1,22 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { ref } from 'vue';
 import axios from 'axios';
 import InputError from '@/Components/InputError.vue';
 defineProps(['title','subtitle'])
 
-const message = ref(''),
-    errors = ref({}),
-    processing = ref(false)
+
+
+const form = useForm({
+    message: ''
+})
 
 function submit(){
-    processing.value = true;
-    axios.post(route('chirps.store'),{message : message.value})
-    .then((res) =>{
-        console.log(res.data)
-        message.value = ''
-        errors.value = {}
+    form.post(route('chirps.store'),{
+        onSuccess: () => {form.reset()},
     })
-    .catch((error)=>{
-        if(error.response.status == 422){
-            errors.value = error.response.data.errors
-        }
-    }).finally( () => (processing.value = false) )
 }
 </script>
 
@@ -40,11 +33,11 @@ function submit(){
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900 dark:text-gray-100">
                        <form @submit.prevent="submit">
-                        <textarea v-model="message" class="block w-full rounded-md border-gray-300 bg-white"></textarea>
-                        <InputError :message="errors.message && errors.message[0]" ></InputError>
+                        <textarea v-model="form.message" class="block w-full rounded-md border-gray-300 bg-white"></textarea>
+                        <InputError :message="form.errors.message" ></InputError>
                         
                         
-                        <PrimaryButton  :disabled="processing" class="mt-2">{{  processing ? 'Enviando..' : 'Chirps' }}</PrimaryButton>
+                        <PrimaryButton  :disabled="form.processing" class="mt-2">{{  form.processing ? 'Enviando..' : 'Chirps' }}</PrimaryButton>
                        </form>
                     </div>
                 </div>
