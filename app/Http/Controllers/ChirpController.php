@@ -36,9 +36,11 @@ class ChirpController extends Controller
             'message' => ['required','max:255'],
         ]);
 
-        return $request->user()->chirps()->create([
+        $request->user()->chirps()->create([
             'message' => $request->input('message')
         ]);
+
+        return to_route('chirps.index');
     }
 
     /**
