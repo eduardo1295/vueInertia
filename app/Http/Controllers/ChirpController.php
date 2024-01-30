@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ChirpResource;
 use App\Models\Chirp;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,9 +14,14 @@ class ChirpController extends Controller
      */
     public function index()
     {
+        $chirps = Chirp::with('user')->latest()->get();
+
+        // return ChirpResource::collection($chirps);
+
+        // ChirpResource::withoutWrapping();
+
         return Inertia::render('Chirps/Index',[
-            'title' => 'Chirps',
-            'subtitle' => 'From PHP to JS'
+            'chirps' => ChirpResource::collection($chirps)
         ]);
     }
 
@@ -40,7 +46,8 @@ class ChirpController extends Controller
             'message' => $request->input('message')
         ]);
 
-        return to_route('chirps.index');
+        return back()->with('status',__('Chirp created!'));
+        // return to_route('chirps.index');
     }
 
     /**

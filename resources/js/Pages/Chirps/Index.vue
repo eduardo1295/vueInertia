@@ -1,11 +1,12 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { ref } from 'vue';
 import axios from 'axios';
 import InputError from '@/Components/InputError.vue';
-defineProps(['title','subtitle'])
+import ChirpItem from '@/Components/ChirpItem.vue';
+defineProps(['chirps'])
 
 
 
@@ -16,6 +17,7 @@ const form = useForm({
 function submit(){
     form.post(route('chirps.store'),{
         onSuccess: () => {form.reset()},
+        preserveState: false
     })
 }
 </script>
@@ -24,6 +26,7 @@ function submit(){
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
+
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">{{ title }}</h2>
         </template>
@@ -40,6 +43,13 @@ function submit(){
                         <PrimaryButton  :disabled="form.processing" class="mt-2">{{  form.processing ? 'Enviando..' : 'Chirps' }}</PrimaryButton>
                        </form>
                     </div>
+                </div>
+                <div class="">
+                    <ChirpItem v-for="chirp in chirps" 
+                    :key="`chirps-${chirp.id}`" 
+                    :chirp="chirp"
+                    />
+                    
                 </div>
             </div>
         </div>
