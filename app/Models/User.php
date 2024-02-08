@@ -48,10 +48,10 @@ class User extends Authenticatable
             return $this->hasMany(Chirp::class);
     }
     
-    public function toArray() : array
-    {
-            return[
-                'name'=> $this->name
-            ];
-    }
+    // public function toArray() : array
+    // {
+    //         return[
+    //             'name'=> $this->name
+    //         ];
+    // }
 }
