@@ -16,6 +16,7 @@ class ChirpController extends Controller
     {
         $chirps = Chirp::with('user')->latest()->get();
 
+        // return $chirps;
         // return ChirpResource::collection($chirps);
 
         // ChirpResource::withoutWrapping();
@@ -38,13 +39,11 @@ class ChirpController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'message' => ['required','max:255'],
         ]);
 
-        $request->user()->chirps()->create([
-            'message' => $request->input('message')
-        ]);
+        $request->user()->chirps()->create($validated);
 
         return back()->with('status',__('Chirp created!'));
         // return to_route('chirps.index');
@@ -71,7 +70,13 @@ class ChirpController extends Controller
      */
     public function update(Request $request, Chirp $chirp)
     {
-        //
+        $validated = $request->validate([
+            'message' => ['required','max:255'],
+        ]);
+
+        $chirp->update($validated);
+
+        return back()->with('status',__('Chirp updated!'));
     }
 
     /**

@@ -6,20 +6,12 @@ import { ref } from 'vue';
 import axios from 'axios';
 import InputError from '@/Components/InputError.vue';
 import ChirpItem from '@/Components/ChirpItem.vue';
+import ChirpForm from '@/Components/ChirpForm.vue';
+
 defineProps(['chirps'])
 
 
 
-const form = useForm({
-    message: ''
-})
-
-function submit(){
-    form.post(route('chirps.store'),{
-        onSuccess: () => {form.reset()},
-        preserveState: false
-    })
-}
 </script>
 
 <template>
@@ -35,19 +27,12 @@ function submit(){
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900 dark:text-gray-100">
-                       <form @submit.prevent="submit">
-                        <textarea v-model="form.message" class="block w-full rounded-md border-gray-300 bg-white"></textarea>
-                        <InputError :message="form.errors.message" ></InputError>
-                        
-                        
-                        <PrimaryButton  :disabled="form.processing" class="mt-2">{{  form.processing ? 'Enviando..' : 'Chirps' }}</PrimaryButton>
-                       </form>
+                       <!-- Form -->
+                       <ChirpForm/>
                     </div>
                 </div>
                 <div class="">
-                    <ChirpItem v-for="chirp in chirps" 
-                    :key="`chirps-${chirp.id}`" 
-                    :chirp="chirp"
+                    <ChirpItem v-for="chirp in chirps" :key="`chirps-${chirp.id}`" :chirp="chirp"
                     />
                     
                 </div>
