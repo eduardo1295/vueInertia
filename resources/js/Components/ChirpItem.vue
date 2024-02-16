@@ -1,6 +1,7 @@
 <script setup>
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLinkButton from '@/Components/DropdownLinkButton.vue';
+import DropdownLink from '@/Components/DropdownLink.vue';
 import ChirpForm from '@/Components/ChirpForm.vue';
 import {ref} from 'vue';
 defineProps({
@@ -31,8 +32,13 @@ const editing = ref(false);
     <Dropdown>
         <template #trigger>Abir</template>
         <template #content>
-            <DropdownLinkButton @click="editing = true; ">Editar</DropdownLinkButton>
-            <DropdownLinkButton @click="console.log('Eliminar')">Eliminar</DropdownLinkButton>
+            <DropdownLinkButton @click="editing = true; ">Edit</DropdownLinkButton>
+            <DropdownLink 
+            as="button" 
+            :href="route('chirps.destroy',chirp.id)" 
+            method="delete"
+            :preserve-state="false"
+            >Delete</DropdownLink>
             
         </template>
     </Dropdown>

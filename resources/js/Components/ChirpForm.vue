@@ -38,6 +38,6 @@ function submit(){
                         
                         
                         <PrimaryButton  :disabled="form.processing" class="mt-2">{{  form.processing ? 'Enviando..' : 'Chirps' }}</PrimaryButton>
-                        <SecondaryButton class="ml-2" @click="$emit('cancel')"> Cancel </SecondaryButton>
+                        <SecondaryButton v-if="chirp?.id" @click="$emit('cancel')"  class="ml-2"  > Cancel </SecondaryButton>
                        </form>
 </template>

@@ -84,6 +84,7 @@ class ChirpController extends Controller
      */
     public function destroy(Chirp $chirp)
     {
-        //
+        $chirp->delete();
+        return back()->with('status',__('Chirp Deleted!'));
     }
 }
