@@ -29,7 +29,7 @@ const editing = ref(false);
     <br>
     </div>
     
-    <Dropdown>
+    <Dropdown v-if="chirp.user.id === $page.props.auth.user.id">
         <template #trigger>Abir</template>
         <template #content>
             <DropdownLinkButton @click="editing = true; ">Edit</DropdownLinkButton>
